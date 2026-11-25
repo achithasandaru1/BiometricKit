@@ -1,0 +1,5 @@
+"biometric_enable_title" = "تفعيل تسجيل الدخول بالبصمة؟";
+"biometric_enable_message" = "استخدم بصمة الوجه / الإصبع لتسجيل الدخول في المرة القادمة.";
+"biometric_enable_confirm" = "نعم";
+"biometric_enable_decline" = "لا";
+"biometric_login_button" = "تسجيل الدخول باستخدام %@";

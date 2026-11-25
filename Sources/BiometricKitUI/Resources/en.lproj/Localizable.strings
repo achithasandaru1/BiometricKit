@@ -1,0 +1,5 @@
+"biometric_enable_title" = "Enable biometric login?";
+"biometric_enable_message" = "Use Face ID / Touch ID to sign in next time.";
+"biometric_enable_confirm" = "Yes";
+"biometric_enable_decline" = "No";
+"biometric_login_button" = "Sign in with %@";
