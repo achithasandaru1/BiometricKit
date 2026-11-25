@@ -80,11 +80,21 @@ public final class BiometricVault<Secret: Codable>: BiometricVaulting {
         }
     }
 
-    /// Reads the secret. Presents the system Face ID / Touch ID (or passcode) prompt.
+    /// Reads the secret. Presents the standard system Face ID / Touch ID (or passcode) prompt.
+    ///
+    /// The prompt is shown through `LAContext` first, so users get the usual Face ID animation
+    /// and checkmark. The authenticated context is then reused for the Keychain read, so the
+    /// user is not asked twice.
     /// - Throws: `BiometricError`. `.itemNotFound` also clears the stored state.
     public func load(reason: String) async throws -> Secret {
         let context = LAContext()
         context.localizedReason = reason
+
+        try await BiometricAuthenticator.authenticate(
+            using: context,
+            reason: reason,
+            allowsPasscodeFallback: configuration.allowsPasscodeFallback
+        )
 
         var query = baseQuery()
         query[kSecReturnData as String] = true

@@ -24,7 +24,13 @@ public enum BiometricAuthenticator {
     /// Presents the system Face ID / Touch ID (or passcode) prompt.
     /// - Throws: `BiometricError`.
     public static func authenticate(reason: String, allowsPasscodeFallback: Bool = true) async throws {
-        let context = LAContext()
+        try await authenticate(using: LAContext(), reason: reason, allowsPasscodeFallback: allowsPasscodeFallback)
+    }
+
+    /// Same as `authenticate(reason:allowsPasscodeFallback:)`, but evaluates the given context.
+    /// An evaluated context can be passed to the Keychain (`kSecUseAuthenticationContext`) so the
+    /// user is only asked once.
+    static func authenticate(using context: LAContext, reason: String, allowsPasscodeFallback: Bool) async throws {
         let policy = policy(allowsPasscodeFallback)
         var error: NSError?
         guard context.canEvaluatePolicy(policy, error: &error) else {
