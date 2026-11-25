@@ -12,7 +12,7 @@ Secrets are stored in a Keychain item protected by `SecAccessControl` (`.userPre
 Xcode: File > Add Package Dependencies > enter the repository URL (or "Add Local..." for a folder), then add `BiometricKit` and, if wanted, `BiometricKitUI`.
 
 ```swift
-.package(url: "https://example.com/BiometricKit.git", from: "1.0.0")
+.package(url: "https://github.com/achithasandaru1/BiometricKit.git", from: "1.0.0")
 ```
 
 **Required:** add `NSFaceIDUsageDescription` to the app's Info.plist. A package cannot provide it.
