@@ -68,6 +68,29 @@ BiometricIconButton(biometryType: vault.biometryType, tint: .accentColor) {
 - Keep the stored password in sync after a manual login: call `vault.save(...)` again when `vault.isEnabled`.
 - First launch after reinstall (Keychain survives uninstall): `vault.reset()`.
 
+## Example app
+
+`Example/BiometricKitExample` is a small, runnable SwiftUI app that shows the whole flow in one place: login form, the "Enable biometric login?" alert, the Face ID button, and the 401 / first-launch housekeeping. It has a fake server, so no backend is needed.
+
+What it demonstrates:
+- `BiometricVault` setup in one place (`AppBiometric.vault`).
+- Offering biometric login once after the first successful password login (`shouldOfferEnrollment`, `.enableBiometricAlert`).
+- Signing in with `BiometricIconButton` and `vault.load(reason:)`, including the cancelled case.
+- `vault.reset()` when saved credentials are rejected (401) and on the first launch after a reinstall.
+- Logging out while keeping the saved login.
+- State handled with the Observation framework (`@Observable`, `@State`, `@Bindable`), not `ObservableObject`.
+
+How to run:
+1. Open `Example/BiometricKitExample/BiometricKitExample.xcodeproj` in Xcode. It uses the package from this repo folder as a local package, so nothing to install.
+2. Choose an iPhone simulator (or a device, then set your Team under Signing & Capabilities).
+3. On a simulator, enable Face ID with Features > Face ID > Enrolled. Use Features > Face ID > Matching Face to succeed, or Non-matching Face to fail.
+4. Log in with any username and the password `1234`. Tap Yes on the alert, log out, and the Face ID button appears.
+
+Notes:
+- Bundle ID is `com.test.BiometricKitExample` (a test ID). Change it if you run on a device.
+- The example targets iOS 17 because `@Observable` needs iOS 17. The package itself still supports iOS 16. For an iOS 16 app, use `ObservableObject` with `@Published` and `@StateObject` instead. The package calls stay the same.
+- `NSFaceIDUsageDescription` is set in the target's build settings (Info tab).
+
 ## Simple unlock gate (no stored secret)
 
 ```swift
